@@ -213,3 +213,77 @@ int main() {
             vector<Buku> hasil;
             int totalHarga;
             float totalRating = knapsack(bukuDipilih, budget, hasil, totalHarga);
+
+            tampilkanHasil(hasil, totalRating, totalHarga);
+
+            // Tampilkan riwayat
+            cout << endl;
+            cout << "---------------------------------------------------------" << endl;
+            cout << "  Riwayat kategori yang pernah Anda pilih:" <<endl;
+            queue<string> tempRiwayat = riwayatInput;
+            while (!tempRiwayat.empty()) {
+                cout << "  - " << tempRiwayat.front() << endl;
+                tempRiwayat.pop();
+            }
+            cout << "=========================================================" << endl;
+            cout << endl;
+            cout << endl;
+        }
+
+        else if (Menu == 2) {
+            int jumlahBuku;
+            cout << "  Berapa banyak buku yang ingin kamu masukkan? ";
+            cin >> jumlahBuku;
+
+            for (int i = 0; i < jumlahBuku; ++i) {
+                string judul, kategori;
+                int harga;
+                float rating;
+
+                cout << "  Buku ke-" << i + 1 << ":\n";
+                cout << "    Judul: ";
+                cin.ignore();
+                getline(cin, judul);
+                cout << "    Kategori: ";
+                getline(cin, kategori);
+                cout << "    Harga: ";
+                cin >> harga;
+                
+                do {
+                    cout << "Masukkan Rating (0.0 - 5.0): ";
+                    cin >> rating;
+                    if (rating < 0.0 || rating > 5.0) {
+                        cout << "Ratingnya Kelebihan, Masukkan Rating Antara 0.0 - 5.0" << endl;
+                    }
+                } while (rating < 0.0 || rating > 5.0);
+                
+                cout << endl;
+
+                semuaBuku.push_back(Buku{judul, kategori, harga, rating});
+                
+            }
+            cout << "Buku Berhasil Ditambahkan!" << endl;
+        }
+        
+        else if (Menu == 3) {
+            cout << "  Daftar Buku Referensi Yang Tersedia" << endl;
+            tampilkanBuku(semuaBuku);
+        }
+
+        else if (Menu == 4) {
+            hapusBuku(semuaBuku);
+        }
+
+        else if (Menu == 5) {
+            clearScreen();
+            cout << "-------Terima kasih telah menggunakan program ini!------" << endl;
+            break;
+        }
+
+        else {
+            cout << "  Pilihan tidak valid. Coba lagi\n";
+        }
+    }
+
+    return 0;
+}

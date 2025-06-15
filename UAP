@@ -140,3 +140,76 @@ void hapusBuku(vector<Buku>& semuaBuku) {
         cout << "Nomor tidak valid!" << endl;
         return;
     }
+
+string judulDihapus = semuaBuku[pilihan - 1].judul;
+    
+    char konfirmasi;
+    cout << "Apakah Anda yakin ingin menghapus buku \"" << judulDihapus << "\"? (y/n): ";
+    cin >> konfirmasi;
+    
+    if (konfirmasi == 'y' || konfirmasi == 'Y') {
+        semuaBuku.erase(semuaBuku.begin() + pilihan - 1);
+        cout << "Buku \"" << judulDihapus << "\" berhasil dihapus!" << endl;
+    } else {
+        cout << "Tidak Jadi Menghapus Buku" << endl;
+    }
+}
+
+int main() {
+    vector<Buku> semuaBuku = {
+        {"Algoritma C++", "Teknik", 90000, 4.5},
+        {"Data Mining", "Teknik", 120000, 4.0},
+        {"Akuntansi Dasar", "Ekonomi", 87000, 3.8},
+        {"Ekonomi Mikro", "Ekonomi", 110000, 4.2},
+        {"Sastra Indonesia", "Sastra", 70000, 4.1},
+        {"Puisi Modern", "Sastra", 65000, 3.9},
+        {"Struktur Data", "Teknik", 72000, 4.7},
+        {"Manajemen Keuangan", "Ekonomi", 61000, 4.0}
+    };
+
+    queue<string> riwayatInput;
+
+    while (true) {
+        int Menu;
+        cout << endl;
+        cout << "=========================================================" << endl;
+        cout << "                     MENU UTAMA               " << endl;
+        cout << "=========================================================" << endl;
+        cout << "  1. Pilih Kategori Buku" << endl;
+        cout << "  2. Tambahkan Daftar Referensi Buku " << endl;
+        cout << "  3. Tampilkan Daftar Referensi Buku" << endl;
+        cout << "  4. Hapus Referensi Buku" << endl;
+        cout << "  5. Keluar" << endl;
+        cout << "---------------------------------------------------------" << endl;
+        cout << endl;
+        cout << "  Masukkan pilihan Anda (1/2/3/4/5): ";
+        cin >> Menu;
+
+        if (Menu == 1) {
+            string kategoriDipilih;
+            int budget;
+            cout << "  Masukkan kategori buku (Teknik/Ekonomi/Sastra): ";
+            cin >> kategoriDipilih;
+            cout << "  Masukkan anggaran maksimal: ";
+            cin >> budget;
+
+            riwayatInput.push(kategoriDipilih);
+
+            // Filter berdasarkan kategori
+            vector<Buku> bukuDipilih;
+            for (auto& b : semuaBuku) {
+                if (b.kategori == kategoriDipilih) {
+                    bukuDipilih.push_back(b);
+                }
+            }
+
+            if (bukuDipilih.empty()) {
+                cout << "  Tidak ada buku dalam kategori tersebut\n";
+                continue;
+            }
+
+            mergeSort(bukuDipilih, 0, bukuDipilih.size() - 1);
+
+            vector<Buku> hasil;
+            int totalHarga;
+            float totalRating = knapsack(bukuDipilih, budget, hasil, totalHarga);
